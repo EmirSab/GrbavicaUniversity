@@ -107,3 +107,7 @@ C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.c
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.csproj.CopyComplete
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.dll
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.pdb
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.InitialCreate.resources
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.csproj.GenerateResource.cache
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.fullname.resources
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.fullname2.resources
