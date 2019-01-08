@@ -111,3 +111,4 @@ C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.M
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.csproj.GenerateResource.cache
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.fullname.resources
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.fullname2.resources
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.student.resources
