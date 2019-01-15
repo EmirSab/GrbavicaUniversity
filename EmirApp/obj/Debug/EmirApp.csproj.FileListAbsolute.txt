@@ -112,3 +112,7 @@ C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.c
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.fullname.resources
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.fullname2.resources
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.student.resources
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\bin\PagedList.dll
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\bin\PagedList.Mvc.dll
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\bin\PagedList.xml
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\bin\PagedList.Mvc.xml
