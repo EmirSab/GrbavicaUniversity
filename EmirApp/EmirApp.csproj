@@ -187,9 +187,12 @@
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="DAL\SchoolContext.cs" />
     <Compile Include="DAL\SchoolInitializer.cs" />
+    <Compile Include="DAL\SchoolInterceptorTransientErrors.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Migrations\201812272138006_InitialCreate.cs" />
     <Compile Include="Migrations\201812272138006_InitialCreate.Designer.cs">
       <DependentUpon>201812272138006_InitialCreate.cs</DependentUpon>
@@ -227,6 +230,7 @@
     <Content Include="Content\sweetalert\docs.css" />
     <Content Include="Content\sweetalert\sweet-alert.css" />
     <Content Include="Content\sweetalert\thumbs-up.jpg" />
+    <Compile Include="DAL\SchoolInterceptorLogging.cs" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
