@@ -209,6 +209,14 @@
     <Compile Include="Migrations\201901082134330_student.Designer.cs">
       <DependentUpon>201901082134330_student.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901181811313_3.cs" />
+    <Compile Include="Migrations\201901181811313_3.Designer.cs">
+      <DependentUpon>201901181811313_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901181822019_4.cs" />
+    <Compile Include="Migrations\201901181822019_4.Designer.cs">
+      <DependentUpon>201901181822019_4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Course.cs" />
@@ -332,6 +340,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901082134330_student.resx">
       <DependentUpon>201901082134330_student.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901181811313_3.resx">
+      <DependentUpon>201901181811313_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901181822019_4.resx">
+      <DependentUpon>201901181822019_4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
