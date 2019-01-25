@@ -122,3 +122,4 @@ C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.M
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.column.resources
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.ComplexDataModel.resources
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.DepartmentSP.resources
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.RowVersion.resources
