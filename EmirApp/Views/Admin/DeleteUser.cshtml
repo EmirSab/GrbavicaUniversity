@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "DeleteUser";
+}
+
+<h2>Delete User</h2>
+
+@using (Html.BeginForm("DeleteUser", "Admin", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <label class="control-label">Select user</label>
+            @Html.DropDownList("txtEmail", (IEnumerable<SelectListItem>)ViewBag.Useres, "Select....")
+        </div>       @*There was a mistake here instead RoleName it was RoleNames*@
+    </div>
+    <div class="rolw">
+        <div class="col-md-12 col-lg-12">
+            <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+    </div>
+}

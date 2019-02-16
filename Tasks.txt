@@ -1,0 +1,9 @@
+1. Sweet Alert
+2. Login
+3. Seed method prepraviti
+4. Student controller i view (dosta posla)
+5. Soft delete
+6. Mail
+7.PDF
+8. Ispiti
+9. Repository pattern
