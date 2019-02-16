@@ -14,7 +14,17 @@ namespace EmirApp.Controllers
 {
     public class StudentsController : Controller
     {
-        private SchoolContext db = new SchoolContext();
+        private IStudentRepository studentRepository;
+
+        public StudentsController()
+        {
+            this.studentRepository = new StudentRepository(new SchoolContext());
+        }
+
+        public StudentsController(IStudentRepository studentRepository)
+        {
+            this.studentRepository = studentRepository;
+        }
 
         // GET: Students
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -34,7 +44,7 @@ namespace EmirApp.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var students = from s in db.Students
+            var students = from s in studentRepository.GetStudents()
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -63,17 +73,9 @@ namespace EmirApp.Controllers
         }
 
         // GET: Students/Details/5
-        public ActionResult Details(int? id)
+        public ViewResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
+            Student student = studentRepository.GetStudentByID(id);
             return View(student);
         }
 
@@ -94,8 +96,8 @@ namespace EmirApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Students.Add(student);
-                    db.SaveChanges();
+                    studentRepository.InsertStudent(student);
+                    studentRepository.Save();
                     return RedirectToAction("Index");
                 }
             }
@@ -108,13 +110,13 @@ namespace EmirApp.Controllers
         }
 
         // GET: Students/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = studentRepository.GetStudentByID(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -127,20 +129,20 @@ namespace EmirApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var studentToUpdate = db.Students.Find(id);
+            var studentToUpdate = studentRepository.GetStudentByID(id);
             if (TryUpdateModel(studentToUpdate, "",
                new string[] { "LastName", "FirstMidName", "EnrollmentDate" }))
             {
                 try
                 {
-                    db.SaveChanges();
-
+                    studentRepository.UpdateStudent(studentToUpdate);
+                    studentRepository.Save();
                     return RedirectToAction("Index");
                 }
                 catch (DataException /* dex */)
@@ -153,7 +155,7 @@ namespace EmirApp.Controllers
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(int? id, bool? saveChangesError = false)
+        public ActionResult Delete(int id, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -163,7 +165,7 @@ namespace EmirApp.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
-            Student student = db.Students.Find(id);
+            Student student = studentRepository.GetStudentByID(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -178,9 +180,9 @@ namespace EmirApp.Controllers
         {
             try
             {
-                Student student = db.Students.Find(id);
-                db.Students.Remove(student);
-                db.SaveChanges();
+                Student student = studentRepository.GetStudentByID(id);
+                studentRepository.DeleteStudent(id);
+                studentRepository.Save();
             }
             catch (DataException/* dex */)
             {
@@ -194,7 +196,7 @@ namespace EmirApp.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                studentRepository.Dispose();
             }
             base.Dispose(disposing);
         }
