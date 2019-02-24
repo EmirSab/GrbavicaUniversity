@@ -14,12 +14,12 @@ namespace EmirApp.Controllers
 {
     public class CoursesController : Controller
     {
-        private SchoolContext db = new SchoolContext();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Courses
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            var courses = db.Courses.Include(c => c.Department);
+            var courses = unitOfWork.CourseRepository.Get(includeProperties: "Department");
             return View(courses.ToList());
         }
 
@@ -30,7 +30,7 @@ namespace EmirApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = db.Courses.Find(id);
+            Course course = unitOfWork.CourseRepository.GetByID(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -56,8 +56,8 @@ namespace EmirApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Courses.Add(course);
-                    db.SaveChanges();
+                    unitOfWork.CourseRepository.Insert(course);
+                    unitOfWork.Save();
                     return RedirectToAction("Index");
                 }
             }
@@ -71,18 +71,9 @@ namespace EmirApp.Controllers
         }
 
         // GET: Courses/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
+            Course course = unitOfWork.CourseRepository.GetByID(id);
             PopulateDepartmentsDropDownList(course.DepartmentID);
             return View(course);
         }
@@ -92,37 +83,32 @@ namespace EmirApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult Edit(
+           [Bind(Include = "CourseID,Title,Credits,DepartmentID")]
+         Course course)
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var courseToUpdate = db.Courses.Find(id);
-            if (TryUpdateModel(courseToUpdate, "",
-               new string[] { "Title", "Credits", "DepartmentID" }))
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    db.SaveChanges();
-
+                    unitOfWork.CourseRepository.Update(course);
+                    unitOfWork.Save();
                     return RedirectToAction("Index");
                 }
-                catch (RetryLimitExceededException /* dex */)
-                {
-                    //Log the error (uncomment dex variable name and add a line here to write a log.
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
-                }
             }
-            PopulateDepartmentsDropDownList(courseToUpdate.DepartmentID);
-            return View(courseToUpdate);
+            catch (DataException /* dex */)
+            {
+                //Log the error (uncomment dex variable name after DataException and add a line here to write a log.)
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+            }
+            PopulateDepartmentsDropDownList(course.DepartmentID);
+            return View(course);
         }
 
         private void PopulateDepartmentsDropDownList(object selectedDepartment = null)
         {
-            var departmentsQuery = from d in db.Departments
-                                   orderby d.Name
-                                   select d;
+            var departmentsQuery = unitOfWork.DepartmentRepository.Get(
+             orderBy: q => q.OrderBy(d => d.Name));
             ViewBag.DepartmentID = new SelectList(departmentsQuery, "DepartmentID", "Name", selectedDepartment);
         }
 
@@ -133,7 +119,7 @@ namespace EmirApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = db.Courses.Find(id);
+            Course course = unitOfWork.CourseRepository.GetByID(id);
             if (course == null)
             {
                 return HttpNotFound();
@@ -146,9 +132,9 @@ namespace EmirApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Course course = db.Courses.Find(id);
-            db.Courses.Remove(course);
-            db.SaveChanges();
+            Course course = unitOfWork.CourseRepository.GetByID(id);
+            unitOfWork.CourseRepository.Delete(id);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -156,7 +142,7 @@ namespace EmirApp.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
