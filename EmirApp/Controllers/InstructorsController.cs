@@ -15,13 +15,13 @@ namespace EmirApp.Controllers
 {
     public class InstructorsController : Controller
     {
-        private SchoolContext db = new SchoolContext();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Instructors
         public ActionResult Index(int? id, int? courseID)
         {
             var viewModel = new InstructorIndexData();
-            viewModel.Instructors = db.Instructors
+            viewModel.Instructors = unitOfWork.InstructorRepository.context.Instructors
                 .Include(i => i.OfficeAssignment)
                 .Include(i => i.Courses.Select(c => c.Department))
                 .OrderBy(i => i.LastName);
@@ -40,10 +40,11 @@ namespace EmirApp.Controllers
                 //    x => x.CourseID == courseID).Single().Enrollments;
                 // Explicit loading
                 var selectedCourse = viewModel.Courses.Where(x => x.CourseID == courseID).Single();
-                db.Entry(selectedCourse).Collection(x => x.Enrollments).Load();
+                unitOfWork.InstructorRepository.context.Entry(selectedCourse).Collection(x => x.Enrollments).Load();
+                //db.Entry(selectedCourse).Collection(x => x.Enrollments).Load();
                 foreach (Enrollment enrollment in selectedCourse.Enrollments)
                 {
-                    db.Entry(enrollment).Reference(x => x.Student).Load();
+                    unitOfWork.InstructorRepository.context.Entry(enrollment).Reference(x => x.Student).Load();
                 }
 
                 viewModel.Enrollments = selectedCourse.Enrollments;
@@ -59,7 +60,8 @@ namespace EmirApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instructor instructor = db.Instructors.Find(id);
+            Instructor instructor = unitOfWork.InstructorRepository.GetByID(id);
+                //db.Instructors.Find(id);
             if (instructor == null)
             {
                 return HttpNotFound();
@@ -85,14 +87,17 @@ namespace EmirApp.Controllers
                 instructor.Courses = new List<Course>();
                 foreach (var course in selectedCourses)
                 {
-                    var courseToAdd = db.Courses.Find(int.Parse(course));
+                    var courseToAdd = unitOfWork.CourseRepository.GetByID(int.Parse(course));
+                        //db.Courses.Find(int.Parse(course));
                     instructor.Courses.Add(courseToAdd);
                 }
             }
             if (ModelState.IsValid)
             {
-                db.Instructors.Add(instructor);
-                db.SaveChanges();
+                unitOfWork.InstructorRepository.Insert(instructor);
+                unitOfWork.Save();
+                //db.Instructors.Add(instructor);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
             PopulateAssignedCourseData(instructor);
@@ -106,7 +111,7 @@ namespace EmirApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instructor instructor = db.Instructors
+            Instructor instructor = unitOfWork.InstructorRepository.context.Instructors
                 .Include(i => i.OfficeAssignment)
                 .Include(i => i.Courses)
                 .Where(i => i.ID == id)
@@ -121,7 +126,7 @@ namespace EmirApp.Controllers
 
         private void PopulateAssignedCourseData(Instructor instructor)
         {
-            var allCourses = db.Courses;
+            var allCourses = unitOfWork.InstructorRepository.context.Courses;
             var instructorCourses = new HashSet<int>(instructor.Courses.Select(c => c.CourseID));
             var viewModel = new List<AssignedCourseData>();
             foreach (var course in allCourses)
@@ -147,7 +152,7 @@ namespace EmirApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var instructorToUpdate = db.Instructors
+            var instructorToUpdate = unitOfWork.InstructorRepository.context.Instructors
                .Include(i => i.OfficeAssignment)
                .Include(i => i.Courses)
                .Where(i => i.ID == id)
@@ -165,7 +170,7 @@ namespace EmirApp.Controllers
 
                     UpdateInstructorCourses(selectedCourses, instructorToUpdate);
 
-                    db.SaveChanges();
+                    unitOfWork.Save();
 
                     return RedirectToAction("Index");
                 }
@@ -189,7 +194,7 @@ namespace EmirApp.Controllers
             var selectedCoursesHS = new HashSet<string>(selectedCourses);
             var instructorCourses = new HashSet<int>
                 (instructorToUpdate.Courses.Select(c => c.CourseID));
-            foreach (var course in db.Courses)
+            foreach (var course in unitOfWork.CourseRepository.context.Courses)
             {
                 if (selectedCoursesHS.Contains(course.CourseID.ToString()))
                 {
@@ -215,7 +220,7 @@ namespace EmirApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instructor instructor = db.Instructors.Find(id);
+            Instructor instructor = unitOfWork.InstructorRepository.GetByID(id);
             if (instructor == null)
             {
                 return HttpNotFound();
@@ -228,14 +233,15 @@ namespace EmirApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Instructor instructor = db.Instructors
-     .Include(i => i.OfficeAssignment)
-     .Where(i => i.ID == id)
-     .Single();
+            Instructor instructor = unitOfWork.InstructorRepository.context.Instructors
+            .Include(i => i.OfficeAssignment)
+            .Where(i => i.ID == id)
+            .Single();
 
-            db.Instructors.Remove(instructor);
+            unitOfWork.InstructorRepository.context.Instructors.Remove(instructor);
+            //db.Instructors.Remove(instructor);
 
-            var department = db.Departments
+            var department = unitOfWork.DepartmentRepository.context.Departments
                 .Where(d => d.InstructorID == id)
                 .SingleOrDefault();
             if (department != null)
@@ -243,7 +249,7 @@ namespace EmirApp.Controllers
                 department.InstructorID = null;
             }
 
-            db.SaveChanges();
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -251,7 +257,7 @@ namespace EmirApp.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
