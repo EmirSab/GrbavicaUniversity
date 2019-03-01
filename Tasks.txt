@@ -6,4 +6,4 @@
 6. Mail
 7.PDF
 8. Ispiti
-9. Repository pattern
+9. Repository pattern (gotovo)
