@@ -6,10 +6,10 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditForm"}))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Student</h4>
         <hr />
@@ -42,7 +42,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" onclick="Validate(this, event);" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -51,3 +51,40 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script src="~/Scripts/sweetalert.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    function validateData() {
+        if ($("#LastName").val() != "" && $("#FirstMidName").val() != "" && $("#EnrollmentDate").val() != "") {
+            swal("You have edited the Student")
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function Validate(ctl, event) {
+        event.preventDefault();
+        swal({
+            title: "Do you want to edit this student ?",
+            text: "Please check Information before Submiting!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Save",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    if (validateData() == true) {
+                        $("#EditForm").submit();
+                    }
+                } else {
+                    timeout: 3000;
+                    swal("Cancelled", "You have Cancelled Form Submission!", "error");
+                }
+            });
+    }
+</script>
