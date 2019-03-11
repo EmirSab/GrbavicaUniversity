@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditForm"}))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -80,6 +80,7 @@
                 if (isConfirm) {
                     if (validateData() == true) {
                         $("#EditForm").submit();
+                        swal("You have changed student data");
                     }
                 } else {
                     timeout: 3000;

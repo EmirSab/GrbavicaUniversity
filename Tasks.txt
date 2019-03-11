@@ -1,6 +1,6 @@
-1. Sweet Alert
+1. Sweet Alert (Gotovo)
 2. Login
-3. Seed method prepraviti
+3. Seed method prepraviti (Gotovo)
 4. Student controller i view (dosta posla)
 5. Soft delete
 6. Mail

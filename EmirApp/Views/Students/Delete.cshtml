@@ -67,12 +67,12 @@
     function Validate(ctl, event) {
         event.preventDefault();
         swal({
-            title: "Do you want to save it?",
-            text: "Please check Information before Submiting!",
+            title: "Do you want to delete this record?",
+            text: "Are you sure before Submiting!",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Save",
+            confirmButtonText: "Delete",
             cancelButtonText: "Cancel",
             closeOnConfirm: false,
             closeOnCancel: false
@@ -81,6 +81,7 @@
                 if (isConfirm) {
                     if (validateData() == true) {
                         $("#DeleteForm").submit();
+                        swal("You have deleted the Student");
                     }
                 } else {
                     swal("Cancelled", "You have Cancelled Form Submission!", "error");

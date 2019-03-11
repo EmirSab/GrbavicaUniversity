@@ -97,6 +97,8 @@ namespace EmirApp.Controllers
                 if (ModelState.IsValid)
                 {
                     studentRepository.InsertStudent(student);
+                    var emir = student.LastName;
+                    UppercaseFirst(emir);
                     studentRepository.Save();
                     return RedirectToAction("Index");
                 }
@@ -108,7 +110,12 @@ namespace EmirApp.Controllers
             }
             return View(student);
         }
-
+        string UppercaseFirst(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+                return string.Empty;
+            return char.ToUpper(str[0]) + str.Substring(1).ToLower();
+        }
         // GET: Students/Edit/5
         public ActionResult Edit(int id)
         {

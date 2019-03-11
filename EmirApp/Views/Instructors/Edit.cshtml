@@ -6,82 +6,121 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditForm" }))
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Instructor</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.ID)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Instructor</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.FirstMidName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.FirstMidName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FirstMidName, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstMidName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstMidName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstMidName, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.HireDate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.HireDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.HireDate, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.HireDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HireDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.HireDate, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.OfficeAssignment.Location, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.OfficeAssignment.Location)
-            @Html.ValidationMessageFor(model => model.OfficeAssignment.Location)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <table>
-                <tr>
-                    @{
-                        int cnt = 0;
-                        List<EmirApp.ViewModels.AssignedCourseData> courses = ViewBag.Courses;
-
-                        foreach (var course in courses)
-                        {
-                            if (cnt++ % 3 == 0)
-                            {
-                            @:</tr><tr>
-                            }
-                            @:<td>
-                                <input type="checkbox"
-                                       name="selectedCourses"
-                                       value="@course.CourseID"
-                                       @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
-                                @course.CourseID @:  @course.Title
-                            @:</td>
-                        }
-                    @:</tr>
-                    }
-                </table>
+        <div class="form-group">
+            @Html.LabelFor(model => model.OfficeAssignment.Location, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OfficeAssignment.Location)
+                @Html.ValidationMessageFor(model => model.OfficeAssignment.Location)
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            List<EmirApp.ViewModels.AssignedCourseData> courses = ViewBag.Courses;
+
+                            foreach (var course in courses)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                @:</tr><tr>
+                                }
+                                @:<td>
+                                    <input type="checkbox"
+                                           name="selectedCourses"
+                                           value="@course.CourseID"
+                                           @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
+                                    @course.CourseID @:  @course.Title
+                                @:</td>
+                            }
+                        @:</tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" onclick="Validate(this, event);" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script src="~/Scripts/sweetalert.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    function validateData() {
+        if ($("#LastName").val() != "" && $("#FirstMidName").val() != "" && $("#HireDate").val() != "" && $("#OfficeAssignment").val() != "") {
+            swal("You have edited the Instructor data")
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function Validate(ctl, event) {
+        event.preventDefault();
+        swal({
+            title: "Do you want to edit this Instructor ?",
+            text: "Please check Information before Submiting!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Save",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    if (validateData() == true) {
+                        $("#EditForm").submit();
+                        swal("You have changed Instructor data");
+                    }
+                } else {
+                    timeout: 3000;
+                    swal("Cancelled", "You have Cancelled Form Submission!", "error");
+                }
+            });
+    }
+</script>

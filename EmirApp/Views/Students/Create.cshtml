@@ -55,23 +55,10 @@
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script type="text/javascript">
     function validateData() {
-        if ($("#LastName").val() == "" && $("#FirstMidName").val() == "" && $("#EnrollmentDate").val() == "") {
+        if ($("#LastName").val() == "" || $("#FirstMidName").val() == "" || $("#EnrollmentDate").val() == "") {
             swal("Oops", "Enter the the basic data about studend", "error")
             return false;
-        }
-        else if ($("#LastName").val() == "") {
-            swal("Oops", "Enter the Last Name", "error")
-            return false;
-        }
-        else if ($("#FirstMidName").val() == "") {
-            swal("Oops", "Enter the First Name", "error")
-            return false;
-        }
-        else if ($("#EnrollmentDate").val() == "") {
-            swal("Oops", "Enter the Enrollment Date", "error")
-            return false;
-        }
-        else {
+        }else {
             return true;
         }
     }

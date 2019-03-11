@@ -6,55 +6,93 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "EditForm" }))
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Course</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.CourseID)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.CourseID, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.CourseID)
+    <div class="form-horizontal">
+        <h4>Course</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CourseID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourseID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.CourseID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Credits, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Credits, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Credits, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="DepartmentID">Department</label>
+            <div class="col-md-10">
+                @Html.DropDownList("DepartmentID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DepartmentID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" onclick="Validate(this, event);"  value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Credits, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Credits, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Credits, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-md-2" for="DepartmentID">Department</label>
-        <div class="col-md-10">
-            @Html.DropDownList("DepartmentID", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.DepartmentID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script src="~/Scripts/sweetalert.js"></script>
+<link href="~/Styles/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    function validateData() {
+        if ($("#CourseID").val() != "" && $("#Title").val() != "" && $("#Credits").val() != "" && $("#DepartmentID").val() != "") {
+            swal("You have edited the Course")
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function Validate(ctl, event) {
+        event.preventDefault();
+        swal({
+            title: "Do you want to edit this Course ?",
+            text: "Please check Information before Submiting!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Save",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    if (validateData() == true) {
+                        $("#EditForm").submit();
+                        swal("You have changed Course data");
+                    }
+                } else {
+                    timeout: 3000;
+                    swal("Cancelled", "You have Cancelled Form Submission!", "error");
+                }
+            });
+    }
+</script>
