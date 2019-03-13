@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmirApp.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace EmirApp.Models
 {
-    public class Person
+    public class Person : ISoftDelete
     {
         //9.03.2019
         //validacija na backendu
@@ -60,5 +61,8 @@ namespace EmirApp.Models
                 return LastName + ", " + FirstMidName;
             }
         }
+
+        public bool IsDeleted { get; set; }
+        public DateTime? DeleteDate { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 1. Sweet Alert (Gotovo)
 2. Login
 3. Seed method prepraviti (Gotovo)
-4. Student controller i view (dosta posla)
-5. Soft delete
+4. Student controller i view (Gotovo)
+5. Soft delete (Gotovo)
 6. Mail
 7.PDF
 8. Ispiti

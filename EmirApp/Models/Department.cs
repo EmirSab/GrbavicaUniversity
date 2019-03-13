@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmirApp.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace EmirApp.Models
 {
-    public class Department
+    public class Department : ISoftDelete
     {
         public int DepartmentID { get; set; }
 
@@ -31,5 +32,7 @@ namespace EmirApp.Models
 
         public virtual Instructor Administrator { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeleteDate { get; set; }
     }
 }

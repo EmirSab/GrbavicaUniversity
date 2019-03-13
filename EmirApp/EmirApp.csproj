@@ -189,6 +189,7 @@
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
+    <Compile Include="DAL\ISoftDelete.cs" />
     <Compile Include="DAL\IStudentRepository.cs" />
     <Compile Include="DAL\SchoolContext.cs" />
     <Compile Include="DAL\SchoolInitializer.cs" />
@@ -247,6 +248,14 @@
     <Compile Include="Migrations\201901272037335_person.cs" />
     <Compile Include="Migrations\201901272037335_person.Designer.cs">
       <DependentUpon>201901272037335_person.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903132016057_softdelete.cs" />
+    <Compile Include="Migrations\201903132016057_softdelete.Designer.cs">
+      <DependentUpon>201903132016057_softdelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903132052098_instructor.cs" />
+    <Compile Include="Migrations\201903132052098_instructor.Designer.cs">
+      <DependentUpon>201903132052098_instructor.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -418,6 +427,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901272037335_person.resx">
       <DependentUpon>201901272037335_person.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903132016057_softdelete.resx">
+      <DependentUpon>201903132016057_softdelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903132052098_instructor.resx">
+      <DependentUpon>201903132052098_instructor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace EmirApp.DAL
 {
-    public class GenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> where TEntity : class, ISoftDelete
     {
         internal SchoolContext context;
         internal DbSet<TEntity> dbSet;
@@ -22,7 +22,7 @@ namespace EmirApp.DAL
             IQueryable<TEntity> query = dbSet;
             if (filter != null)
             {
-                query = query.Where(filter);
+                query = query.Where(q => q.IsDeleted == false).Where(filter);
             }
             foreach (var includePropery in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -34,7 +34,7 @@ namespace EmirApp.DAL
             }
             else
             {
-                return query.ToList();
+                return query.ToList().Where(q => q.IsDeleted == false);
             }
         }
 
@@ -51,7 +51,10 @@ namespace EmirApp.DAL
         public virtual void Delete(object id)
         {
             TEntity entityToDelete = dbSet.Find(id);
-            Delete(entityToDelete);
+            ISoftDelete e = (ISoftDelete)entityToDelete;
+            e.DeleteDate = DateTime.Now;
+            e.IsDeleted = true;
+            //Delete(entityToDelete);
         }
 
         public virtual void Delete(TEntity entityToDelete)
@@ -60,7 +63,10 @@ namespace EmirApp.DAL
             {
                 dbSet.Attach(entityToDelete);
             }
-            dbSet.Remove(entityToDelete);
+            ISoftDelete e = (ISoftDelete)entityToDelete;
+            e.DeleteDate = DateTime.Now;
+            e.IsDeleted = true;
+            //dbSet.Remove(entityToDelete);
         }
 
         public virtual void Update(TEntity entityToUpdate)

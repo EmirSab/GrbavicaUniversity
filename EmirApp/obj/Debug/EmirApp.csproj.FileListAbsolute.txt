@@ -124,3 +124,5 @@ C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.M
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.DepartmentSP.resources
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.RowVersion.resources
 C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.person.resources
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.softdelete.resources
+C:\Users\emirs\Documents\Visual Studio 2017\Projects\EmirApp\obj\Debug\EmirApp.Migrations.instructor.resources

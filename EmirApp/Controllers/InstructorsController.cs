@@ -24,7 +24,7 @@ namespace EmirApp.Controllers
             viewModel.Instructors = unitOfWork.InstructorRepository.context.Instructors
                 .Include(i => i.OfficeAssignment)
                 .Include(i => i.Courses.Select(c => c.Department))
-                .OrderBy(i => i.LastName);
+                .OrderBy(i => i.LastName).Where(q => q.IsDeleted == false);
 
             if (id != null)
             {
@@ -238,7 +238,10 @@ namespace EmirApp.Controllers
             .Where(i => i.ID == id)
             .Single();
 
-            unitOfWork.InstructorRepository.context.Instructors.Remove(instructor);
+            ISoftDelete e = (ISoftDelete)instructor;
+            e.DeleteDate = DateTime.Now;
+            e.IsDeleted = true;
+            //unitOfWork.InstructorRepository.context.Instructors.Remove(instructor);
             //db.Instructors.Remove(instructor);
 
             var department = unitOfWork.DepartmentRepository.context.Departments

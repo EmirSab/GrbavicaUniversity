@@ -44,7 +44,7 @@ namespace EmirApp.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var students = from s in studentRepository.GetStudents()
+            var students = from s in studentRepository.GetStudents().Where(s => s.IsDeleted == false)
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -188,7 +188,10 @@ namespace EmirApp.Controllers
             try
             {
                 Student student = studentRepository.GetStudentByID(id);
-                studentRepository.DeleteStudent(id);
+                ISoftDelete e = (ISoftDelete)student;
+                e.DeleteDate = DateTime.Now;
+                e.IsDeleted = true;
+                //studentRepository.DeleteStudent(id);
                 studentRepository.Save();
             }
             catch (DataException/* dex */)

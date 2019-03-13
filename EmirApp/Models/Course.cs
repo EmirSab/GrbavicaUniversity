@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmirApp.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace EmirApp.Models
 {
-    public class Course
+    public class Course : ISoftDelete
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Display(Name = "Number")]
@@ -24,5 +25,7 @@ namespace EmirApp.Models
         public virtual Department Department { get; set; }
         public virtual ICollection<Enrollment> Enrollments { get; set; }
         public virtual ICollection<Instructor> Instructors { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeleteDate { get; set; }
     }
 }

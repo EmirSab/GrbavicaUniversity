@@ -18,7 +18,7 @@ namespace EmirApp.DAL
 
         public IEnumerable<Student> GetStudents()
         {
-            return context.Students.ToList();
+            return context.Students.Where(q => q.IsDeleted == false).ToList();
         }
 
         public Student GetStudentByID(int id)
